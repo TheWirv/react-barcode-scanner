@@ -1,0 +1,46 @@
+---
+extends:
+  - prettier
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:react/recommended
+  - plugin:react/jsx-runtime
+  - plugin:react-hooks/recommended
+
+parser: "@typescript-eslint/parser"
+
+plugins:
+  - "@typescript-eslint"
+  - prettier
+
+settings:
+  react:
+    version: "detect"
+
+rules:
+  no-console:
+    - "error"
+    - allow:
+        - "warn"
+        - "error"
+        - "info"
+  no-debugger: "error"
+  no-var: "error"
+  no-return-await: "error"
+  react-hooks/exhaustive-deps:
+    - "warn"
+    - additionalHooks: "useQrCodeScanner"
+  "@typescript-eslint/ban-ts-comment": "off"
+  "@typescript-eslint/no-new": "off"
+  "@typescript-eslint/no-non-null-assertion": "off"
+  "@typescript-eslint/no-non-null-asserted-optional-chain": "off"
+  "@typescript-eslint/no-var-requires": "off"
+  "@typescript-eslint/no-empty-function": "off"
+  "@typescript-eslint/no-unused-vars":
+    - "warn"
+    - vars: all
+      ignoreRestSiblings: true
+      argsIgnorePattern: ^_
+      varsIgnorePattern: ^_
+
+root: true

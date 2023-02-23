@@ -1,3 +1,3 @@
-export * from './QrReader/hooks';
-export * from './QrReader';
+export * from './QrCodeScanner/hooks';
+export * from './QrCodeScanner';
 export * from './types';

@@ -1,14 +1,14 @@
-# React QR Reader [![npm version](https://badge.fury.io/js/react-qr-reader.svg)](https://badge.fury.io/js/react-qr-reader) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/react-qr-reader/react-qr-reader/badge.svg)](https://snyk.io/test/github/react-qr-reader/react-qr-reader)
+# React QR Code Scanner [![npm version](https://badge.fury.io/js/react-qr-reader.svg)](https://badge.fury.io/js/react-qr-reader) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/react-qr-reader/react-qr-reader/badge.svg)](https://snyk.io/test/github/react-qr-reader/react-qr-reader)
 
-:rocket: React QR Reader component.
+:rocket: React QR Code Scanner component.
 
 ## Table of contents
 
 - [Use Case](#use-case)
 - [Compatibility](#compatibility)
 - [Installation](#installation)
-  - [NPM](#npm)
-  - [YARN](#yarn)
+  - [yarn](#yarn)
+  - [npm](#npm)
 - [Example Usage](#example-usage)
 - [QrReader API](#component-api)
 - [Browser support](#browser-support)
@@ -18,7 +18,7 @@
 
 ## Use Case
 
-You need a component for Scanning QR codes from a web browser based app.
+You need a component for scanning QR codes from a web browser based app.
 
 ## Compatibility
 
@@ -26,24 +26,24 @@ This component has been tested in the following browsers:
 
 - Chrome Mac OS & Android
 - Firefox Mac OS & Android
-- Safari Mac OS & IOS
+- Safari Mac OS & iOS
 
 Since this library does internal use of hooks you need `React >= 16.8.0`.
 
 ## Installation
 
-You can install this library via NPM or YARN.
+You can install this library via yarn or npm.
 
-### NPM
+### yarn
 
 ```bash
-npm i react-qr-reader
+yarn add react-qr-code-scanner
 ```
 
-### YARN
+### npm
 
 ```bash
-yarn add react-qr-reader
+npm i react-qr-code-scanner
 ```
 
 ## Example Usage
@@ -51,25 +51,25 @@ yarn add react-qr-reader
 After reading and performing the previous steps, you should be able to import the library and use it like in this example:
 
 ```javascript
-import React, { useState } from 'react';
-import { QrReader } from 'react-qr-reader';
+import React, {useState} from 'react';
+import {QrCodeScanner} from 'react-qr-code-scanner';
 
 const Test = (props) => {
   const [data, setData] = useState('No result');
 
   return (
     <>
-      <QrReader
+      <QrCodeScanner
         onResult={(result, error) => {
           if (!!result) {
-            setData(result?.text);
+            setData(result.getText());
           }
 
           if (!!error) {
             console.info(error);
           }
         }}
-        style={{ width: '100%' }}
+        style={{width: '100%'}}
       />
       <p>{data}</p>
     </>
@@ -79,7 +79,7 @@ const Test = (props) => {
 
 ## Component API
 
-The `QrReader` component has the following props:
+The `QrCodeScanner` component has the following props:
 
 | Properties          | Types                                                                                           | Default Value            | Description                                              |
 | ------------------- | ----------------------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------------------- |
@@ -95,6 +95,7 @@ The `QrReader` component has the following props:
 
 ## Maintainers
 
+- Improved by [@TheWirv](https://github.com/TheWirv) .
 - Created by [@JodusNodus](https://github.com/JodusNodus) .
 - Revived thanks to [@JonatanSalas](https://github.com/JonatanSalas) and his company [@BlackBoxVision](https://github.com/BlackBoxVision) .
 

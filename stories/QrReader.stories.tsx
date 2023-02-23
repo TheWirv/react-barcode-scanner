@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Story } from '@storybook/react';
+import React, {useState} from 'react';
+import {Story} from '@storybook/react';
 
-import { ViewFinder } from './ViewFinder';
+import {ViewFinder} from './ViewFinder';
 
-import { QrReader } from '../dist/esm';
-import { QrReaderProps } from '../dist';
+import {QrCodeScanner} from '../dist/esm';
+import {QrCodeScannerProps} from '../dist';
 
 const styles = {
   container: {
@@ -13,13 +13,13 @@ const styles = {
   },
 };
 
-const Template: Story<QrReaderProps> = (args) => {
+const Template: Story<QrCodeScannerProps> = (args) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
 
   return (
     <div style={styles.container}>
-      <QrReader
+      <QrCodeScanner
         {...args}
         onResult={(result, error) => {
           if (result) {
@@ -50,5 +50,5 @@ ScanCode.args = {
 
 export default {
   title: 'Browser QR Reader',
-  component: QrReader,
+  component: QrCodeScanner,
 };

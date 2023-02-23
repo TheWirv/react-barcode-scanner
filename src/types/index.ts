@@ -1,7 +1,8 @@
-import { BrowserQRCodeReader } from '@zxing/browser';
-import { Result } from '@zxing/library';
+import {CSSProperties, ReactElement} from 'react';
+import {BrowserQRCodeReader} from '@zxing/browser';
+import {Result} from '@zxing/library';
 
-export type QrReaderProps = {
+export type QrCodeScannerProps = {
   /**
    * Media track constraints object, to specify which camera and capabilities to use
    */
@@ -13,7 +14,7 @@ export type QrReaderProps = {
   /**
    * Property that represents the view finder component
    */
-  ViewFinder?: (props: any) => React.ReactElement<any, any> | null;
+  ViewFinder?: () => ReactElement | null;
   /**
    * Property that represents the scan period
    */
@@ -29,37 +30,37 @@ export type QrReaderProps = {
   /**
    * Property that represents a style for the container
    */
-  containerStyle?: any;
+  containerStyle?: CSSProperties;
   /**
    * Property that represents a style for the video container
    */
-  videoContainerStyle?: any;
+  videoContainerStyle?: CSSProperties;
   /**
    * Property that represents a style for the video
    */
-  videoStyle?: any;
+  videoStyle?: CSSProperties;
 };
 
 export type OnResultFunction = (
   /**
    * The QR values extracted by Zxing
    */
-  result?: Result | undefined | null,
+  result?: Result | null,
   /**
    * The name of the exceptions thrown while reading the QR
    */
-  error?: Error | undefined | null,
+  error?: Error | null,
   /**
    * The instance of the QR browser reader
    */
   codeReader?: BrowserQRCodeReader
 ) => void;
 
-export type UseQrReaderHookProps = {
+export type UseQrCodeScannerHookProps = {
   /**
    * Media constraints object, to specify which camera and capabilities to use
    */
-  constraints?: MediaTrackConstraints;
+  constraints: MediaTrackConstraints;
   /**
    * Callback for retrieving the result
    */
@@ -67,11 +68,11 @@ export type UseQrReaderHookProps = {
   /**
    * Property that represents the scan period
    */
-  scanDelay?: number;
+  scanDelay: number;
   /**
    * Property that represents the ID of the video element
    */
-  videoId?: string;
+  videoId: string;
 };
 
-export type UseQrReaderHook = (props: UseQrReaderHookProps) => void;
+export type UseQrCodeScannerHook = (props: UseQrCodeScannerHookProps) => void;

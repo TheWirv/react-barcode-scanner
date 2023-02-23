@@ -1,4 +1,6 @@
-export const styles: any = {
+import {CSSProperties} from 'react';
+
+export const styles: Record<string, CSSProperties> = {
   container: {
     width: '100%',
     paddingTop: '100%',
