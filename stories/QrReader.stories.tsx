@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Story} from '@storybook/react';
 
 import {ViewFinder} from './ViewFinder';
 
-import {QrCodeScanner} from '../dist/esm';
-import {QrCodeScannerProps} from '../dist';
+import {QrCodeScanner, QrCodeScannerProps} from '../lib/module';
 
 const styles = {
   container: {
@@ -14,8 +13,8 @@ const styles = {
 };
 
 const Template: Story<QrCodeScannerProps> = (args) => {
-  const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
+  const [error, setError] = useState('');
+  const [data, setData] = useState('');
 
   return (
     <div style={styles.container}>
@@ -23,11 +22,11 @@ const Template: Story<QrCodeScannerProps> = (args) => {
         {...args}
         onResult={(result, error) => {
           if (result) {
-            setData(result);
+            setData(result?.getText());
           }
 
-          if (error) {
-            setError(error.message);
+          if (error?.message) {
+            setError(error?.message);
           }
         }}
       />

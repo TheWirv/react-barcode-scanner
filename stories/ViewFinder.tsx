@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const ViewFinder = () => (
   <svg
     width="50px"

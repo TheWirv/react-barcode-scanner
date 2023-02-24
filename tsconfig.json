@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": ".",
     "rootDirs": ["src"],
     "baseUrl": "src",
     "module": "esnext",
@@ -19,9 +19,9 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "declarationDir": "types",
-    "emitDeclarationOnly": true
+    "noEmit": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "stories/*", "rollup.config.ts"],
   "exclude": ["node_modules"]
 }

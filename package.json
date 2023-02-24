@@ -2,21 +2,15 @@
   "name": "react-qr-code-scanner",
   "version": "3.1.0",
   "description": "A React component for scanning QR codes via webcam",
-  "scripts": {
-    "build": "rollup -c --configPlugin typescript",
-    "prepublish": "yarn build",
-    "lint": "eslint --fix 'src/**'",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "deploy-storybook": "storybook-to-ghpages",
-    "prepare": "husky install"
-  },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
+  "author": "Marcel Lasaj",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TheWirv/react-qr-code-scanner.git"
+  },
+  "homepage": "https://github.com/TheWirv/react-qr-code-scanner#readme",
+  "bugs": {
+    "url": "https://github.com/TheWirv/react-qr-code-scanner/issues"
   },
   "keywords": [
     "react",
@@ -29,16 +23,27 @@
     "qrcodescanner",
     "qrcodereader"
   ],
-  "author": "Marcel Lasaj",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/TheWirv/react-qr-code-scanner/issues"
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
   },
-  "homepage": "https://github.com/TheWirv/react-qr-code-scanner#readme",
-  "peerDependencies": {
-    "react": "^16.8.0 || 17.x || 18.x",
-    "react-dom": "^16.8.0 || 17.x || 18.x"
+  "scripts": {
+    "build": "rollup --config rollup.config.ts --configPlugin typescript",
+    "prepublish": "yarn build",
+    "lint": "eslint --fix 'src/**'",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages",
+    "prepare": "husky install"
   },
+  "main": "lib/commonjs/index.js",
+  "source": "src/index.ts",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/index.d.ts",
+  "files": [
+    "src",
+    "lib"
+  ],
   "dependencies": {
     "@zxing/browser": "0.1.1",
     "@zxing/library": "^0.19.2",
@@ -82,7 +87,12 @@
     "rollup-plugin-web-worker-loader": "^1.6.1",
     "source-map-explorer": "^2.5.3",
     "ts-loader": "^9.4.2",
+    "tslib": "^2.5.0",
     "typescript": "^4.9.5"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || 17.x || 18.x",
+    "react-dom": "^16.8.0 || 17.x || 18.x"
   },
   "lint-staged": {
     "*.{ts,tsx,js,json,css,md,scss}": [

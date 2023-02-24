@@ -1,47 +1,58 @@
+import type {RollupOptions} from 'rollup';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import {terser} from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import dts from 'rollup-plugin-dts';
+// @ts-ignore: There are no types for the Web Worker plugin
 import webWorkerLoader from 'rollup-plugin-web-worker-loader';
 import packageJson from './package.json' assert {type: 'json'};
 
-const extensions = ['.js', '.jsx', '.ts', '.tsx'];
-
-/**
- * @type {import('rollup').RollupOptions}
- */
-export default [
+const config: RollupOptions[] = [
   {
     input: 'src/index.ts',
     output: [
       {
         file: packageJson.main,
-        format: 'cjs',
+        format: 'commonjs',
         sourcemap: true,
-        name: 'react-ts-lib',
       },
       {
         file: packageJson.module,
-        format: 'esm',
+        format: 'module',
         sourcemap: true,
       },
     ],
     plugins: [
       webWorkerLoader(),
       peerDepsExternal(),
-      nodeResolve({extensions}),
+      nodeResolve({extensions: ['.js', '.jsx', '.ts', '.tsx']}),
       commonjs(),
-      typescript({tsconfig: './tsconfig.json', module: 'esnext'}),
+      typescript({
+        tsconfig: './tsconfig.json',
+        module: 'esnext',
+        include: ['src/**/*'],
+      }),
       terser(),
     ],
   },
   {
-    input: 'dist/esm/types/index.d.ts',
+    input: 'lib/module/index.d.ts',
     output: [
-      {file: 'dist/index.d.ts', format: 'esm', chunkFileNames: '[name].js'},
+      {
+        file: 'lib/commonjs/index.d.ts',
+        format: 'esm',
+        chunkFileNames: '[name].js',
+      },
+      {
+        file: 'lib/module/index.d.ts',
+        format: 'esm',
+        chunkFileNames: '[name].js',
+      },
     ],
     plugins: [dts()],
   },
 ];
+
+export default config;
