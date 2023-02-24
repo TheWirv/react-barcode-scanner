@@ -1,4 +1,4 @@
-# React QR Code Scanner [![npm version](https://badge.fury.io/js/react-qr-reader.svg)](https://badge.fury.io/js/react-qr-reader) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/react-qr-reader/react-qr-reader/badge.svg)](https://snyk.io/test/github/react-qr-reader/react-qr-reader)
+# React QR Code Scanner [![npm version](https://badge.fury.io/js/@thewirv%2Freact-qr-code-scanner.svg)](https://badge.fury.io/js/@thewirv%2Freact-qr-code-scanner) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/TheWirv/react-qr-code-scanner/badge.svg)](https://snyk.io/test/github/TheWirv/react-qr-code-scanner)
 
 :rocket: React QR Code Scanner component.
 
