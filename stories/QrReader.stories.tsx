@@ -13,8 +13,8 @@ const styles = {
 };
 
 const Template: Story<QrCodeScannerProps> = (args) => {
+  const [data, setData] = useState('No result');
   const [error, setError] = useState('');
-  const [data, setData] = useState('');
 
   return (
     <div style={styles.container}>
@@ -22,13 +22,12 @@ const Template: Story<QrCodeScannerProps> = (args) => {
         {...args}
         onResult={(result, error) => {
           if (result) {
-            setData(result?.getText());
-          }
-
-          if (error?.message) {
-            setError(error?.message);
+            setData(result.getText());
+          } else if (error) {
+            setError(error.message);
           }
         }}
+        onLoad={() => console.info('Video feed has loaded!')}
       />
       <p>The value is: {JSON.stringify(data, null, 2)}</p>
       <p>The error is: {error}</p>

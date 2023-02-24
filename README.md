@@ -61,12 +61,10 @@ const Test = (props) => {
     <>
       <QrCodeScanner
         onResult={(result, error) => {
-          if (!!result) {
+          if (result) {
             setData(result.getText());
-          }
-
-          if (!!error) {
-            console.info(error);
+          } else if (error) {
+            console.error(error.message);
           }
         }}
         style={{width: '100%'}}

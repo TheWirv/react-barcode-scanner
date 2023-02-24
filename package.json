@@ -31,23 +31,22 @@
     "build": "rollup --config rollup.config.ts --configPlugin typescript",
     "prepublish": "yarn build",
     "lint": "eslint --fix 'src/**'",
+    "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "deploy-storybook": "storybook-to-ghpages",
-    "prepare": "husky install"
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "main": "lib/commonjs/index.js",
   "source": "src/index.ts",
   "module": "lib/module/index.js",
-  "types": "lib/typescript/index.d.ts",
+  "types": "lib/module/index.d.ts",
   "files": [
     "src",
     "lib"
   ],
   "dependencies": {
     "@zxing/browser": "0.1.1",
-    "@zxing/library": "^0.19.2",
-    "rollup": "^3.17.2"
+    "@zxing/library": "^0.19.2"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
@@ -62,8 +61,11 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-typescript": "^11.0.0",
     "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
-    "@storybook/storybook-deployer": "^2.8.16",
     "@types/react": "^18.0.28",
     "@types/rollup-plugin-peer-deps-external": "^2.2.1",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
@@ -75,12 +77,14 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.11",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
     "react": "^18.2.0",
     "react-docgen-typescript-loader": "^3.7.2",
     "react-dom": "^18.2.0",
+    "rollup": "^3.17.2",
     "rollup-plugin-dts": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-terser": "^7.0.2",

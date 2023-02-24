@@ -22,6 +22,10 @@ export function isValidType(
   return isValid;
 }
 
+export function getValidError(error: Error | undefined) {
+  return !!error && JSON.stringify(error) !== JSON.stringify({}) ? error : null;
+}
+
 export async function decodeQrCodeFromConstraints(
   codeReader: BrowserQRCodeReader,
   constraints: MediaTrackConstraints,
@@ -39,11 +43,11 @@ export async function decodeQrCodeFromConstraints(
             throw new Error('Component is unmounted');
           }
 
-          onResult(result, error, codeReader);
+          onResult(result, getValidError(error), codeReader);
         }
       );
     }
   } catch (error) {
-    onResult(null, error as Error, codeReader);
+    onResult(null, getValidError(error as Error), codeReader);
   }
 }

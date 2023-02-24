@@ -2,27 +2,15 @@ import {CSSProperties, ReactElement} from 'react';
 import {BrowserQRCodeReader} from '@zxing/browser';
 import {Result} from '@zxing/library';
 
-export type QrCodeScannerProps = {
+export type QrCodeScannerProps = Partial<UseQrCodeScannerHookProps> & {
   /**
-   * Media track constraints object, to specify which camera and capabilities to use
+   * Called when the video feed has been loaded.
    */
-  constraints?: MediaTrackConstraints;
-  /**
-   * Called when an error occurs.
-   */
-  onResult?: OnResultFunction;
+  onLoad?: () => void;
   /**
    * Property that represents the view finder component
    */
   ViewFinder?: () => ReactElement | null;
-  /**
-   * Property that represents the scan period
-   */
-  scanDelay?: number;
-  /**
-   * Property that represents the ID of the video element
-   */
-  videoId?: string;
   /**
    * Property that represents an optional className to modify styles
    */
@@ -58,11 +46,11 @@ export type OnResultFunction = (
 
 export type UseQrCodeScannerHookProps = {
   /**
-   * Media constraints object, to specify which camera and capabilities to use
+   * Media track constraints object, to specify which camera and capabilities to use
    */
   constraints: MediaTrackConstraints;
   /**
-   * Callback for retrieving the result
+   * Callback for retrieving the result or  when an error occurs.
    */
   onResult?: OnResultFunction;
   /**
