@@ -1,5 +1,5 @@
 {
-  "name": "react-qr-code-scanner",
+  "name": "@thewirv/react-qr-code-scanner",
   "version": "3.1.0",
   "description": "A React component for scanning QR codes via webcam",
   "author": "Marcel Lasaj",

@@ -37,13 +37,13 @@ You can install this library via yarn or npm.
 ### yarn
 
 ```bash
-yarn add react-qr-code-scanner
+yarn add @thewirv/react-qr-code-scanner
 ```
 
 ### npm
 
 ```bash
-npm i react-qr-code-scanner
+npm i @thewirv/react-qr-code-scanner
 ```
 
 ## Example Usage
@@ -52,7 +52,7 @@ After reading and performing the previous steps, you should be able to import th
 
 ```javascript
 import React, {useState} from 'react';
-import {QrCodeScanner} from 'react-qr-code-scanner';
+import {QrCodeScanner} from '@thewirv/react-qr-code-scanner';
 
 const Test = (props) => {
   const [data, setData] = useState('No result');
