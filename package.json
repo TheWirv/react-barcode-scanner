@@ -41,7 +41,6 @@
   "module": "lib/module/index.js",
   "types": "lib/module/index.d.ts",
   "files": [
-    "src",
     "lib"
   ],
   "dependencies": {
