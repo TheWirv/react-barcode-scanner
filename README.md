@@ -83,12 +83,12 @@ The `BarcodeScanner` component has the following props:
 
 | Properties            | Types                                                                                           | Default Value            | Required | Description                                              |
 | --------------------- | ----------------------------------------------------------------------------------------------- | ------------------------ | -------- | -------------------------------------------------------- |
-| `doScan`              | `boolean`                                                                                       | true                     | ☐        | Controls whether the scanner should be scanning or not   |
+| `doScan`              | `boolean`                                                                                       | `true`                   | ☐        | Controls whether the scanner should be scanning or not   |
 | `constraints`         | [MediaTrackConstraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints) | `{ facingMode: 'user' }` | ☐        | Specify which camera should be used (if available)       |
 | `onSuccess`           | `(text: string) => void`                                                                        | none                     | 🗹        | Callback for retrieving the result                       |
 | `onError`             | `(e?: Error) => void`                                                                           | none                     | ☐        | Callback for retrieving the error when one occurs        |
 | `onLoad`              | `() => void`                                                                                    | none                     | ☐        | Callback for when the video feed has been loaded         |
-| `videoId`             | `string`                                                                                        | `video`                  | ☐        | The ID for the video element                             |
+| `videoId`             | `string`                                                                                        | `'video'`                | ☐        | The ID for the video element                             |
 | `ViewFinder`          | `React.ReactElement`                                                                            | none                     | ☐        | ViewFinder component to rendering over the video element |
 | `containerStyle`      | `React.CSSProperties`                                                                           | none                     | ☐        | Style object for the wrapping container element          |
 | `videoContainerStyle` | `React.CSSProperties`                                                                           | none                     | ☐        | Style object for the video container element             |
