@@ -50,24 +50,24 @@ npm i @thewirv/react-qr-code-scanner
 
 After reading and performing the previous steps, you should be able to import the library and use it like in this example:
 
-```javascript
-import React, {useState} from 'react';
+```typescript
+import {useState} from 'react';
 import {QrCodeScanner} from '@thewirv/react-qr-code-scanner';
 
-const Test = (props) => {
+const Test = (props: Props) => {
   const [data, setData] = useState('No result');
 
   return (
     <>
       <QrCodeScanner
-        onResult={(result, error) => {
-          if (result) {
-            setData(result.getText());
-          } else if (error) {
+        onSuccess={(text) => setData(text)}
+        onError={(error) => {
+          if (error) {
             console.error(error.message);
           }
         }}
-        style={{width: '100%'}}
+        onLoad={() => console.log('Video feed has loaded!')}
+        containerStyle={{width: '100%'}}
       />
       <p>{data}</p>
     </>
@@ -79,17 +79,18 @@ const Test = (props) => {
 
 The `QrCodeScanner` component has the following props:
 
-| Properties          | Types                                                                                           | Default Value            | Description                                              |
-| ------------------- | ----------------------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------------------- |
-| constraints         | [MediaTrackConstraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints) | `{ facingMode: 'user' }` | Specify which camera should be used (if available).      |
-| onResult            | `function`                                                                                      | none                     | Scan event handler                                       |
-| videoId             | `string`                                                                                        | `video`                  | The ID for the video element                             |
-| scanDelay           | `number`                                                                                        | `500`                    | The scan period for the QR hook                          |
-| ViewFinder          | component                                                                                       | none                     | ViewFinder component to rendering over the video element |
-| className           | string                                                                                          | none                     | ClassName for the container element.                     |
-| containerStyle      | object                                                                                          | none                     | Style object for the container element.                  |
-| videoContainerStyle | object                                                                                          | none                     | Style object for the video container element.            |
-| videoStyle          | object                                                                                          | none                     | Style object for the video element.                      |
+| Properties            | Types                                                                                           | Default Value            | Required | Description                                              |
+| --------------------- | ----------------------------------------------------------------------------------------------- | ------------------------ | -------- | -------------------------------------------------------- |
+| `doScan`              | `boolean`                                                                                       | true                     | ☐        | Controls whether the scanner should be scanning or not   |
+| `constraints`         | [MediaTrackConstraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints) | `{ facingMode: 'user' }` | ☐        | Specify which camera should be used (if available)       |
+| `onSuccess`           | `(text: string) => void`                                                                        | none                     | 🗹        | Callback for retrieving the result                       |
+| `onError`             | `(e?: Error) => void`                                                                           | none                     | ☐        | Callback for retrieving the error when one occurs        |
+| `onLoad`              | `() => void`                                                                                    | none                     | ☐        | Callback for when the video feed has been loaded         |
+| `videoId`             | `string`                                                                                        | `video`                  | ☐        | The ID for the video element                             |
+| `ViewFinder`          | `React.ReactElement`                                                                            | none                     | ☐        | ViewFinder component to rendering over the video element |
+| `containerStyle`      | `React.CSSProperties`                                                                           | none                     | ☐        | Style object for the wrapping container element          |
+| `videoContainerStyle` | `React.CSSProperties`                                                                           | none                     | ☐        | Style object for the video container element             |
+| `videoStyle`          | `React.CSSProperties`                                                                           | none                     | ☐        | Style object for the video element                       |
 
 ## Maintainers
 

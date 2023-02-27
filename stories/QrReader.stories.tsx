@@ -11,25 +11,43 @@ const styles = {
     margin: 'auto',
   },
 };
+const defaultData = 'No result';
+const defaultError = 'No error';
 
 const Template: Story<QrCodeScannerProps> = (args) => {
-  const [data, setData] = useState('No result');
-  const [error, setError] = useState('');
+  const [renderCamera, setRenderCamera] = useState(true);
+  const [doScan, setDoScan] = useState(true);
+  const [data, setData] = useState(defaultData);
+  const [error, setError] = useState(defaultError);
+
+  const onClickReset = () => {
+    setData(defaultData);
+    setError(defaultError);
+    setRenderCamera(true);
+    setDoScan(true);
+  };
 
   return (
     <div style={styles.container}>
-      <QrCodeScanner
-        {...args}
-        onResult={(result, error) => {
-          if (result) {
-            setData(result.getText());
-          } else if (error) {
-            setError(error.message);
-          }
-        }}
-        onLoad={() => console.info('Video feed has loaded!')}
-      />
-      <p>The value is: {JSON.stringify(data, null, 2)}</p>
+      {renderCamera ? (
+        <QrCodeScanner
+          {...args}
+          doScan={doScan}
+          onSuccess={(text) => {
+            setData(text);
+            setDoScan(false);
+            setRenderCamera(false);
+          }}
+          onError={(error) => {
+            if (error) {
+              setError(error.message);
+            }
+          }}
+        />
+      ) : (
+        <button onClick={onClickReset}>Reset Scanner</button>
+      )}
+      <p>The value is: {data}</p>
       <p>The error is: {error}</p>
     </div>
   );
@@ -40,7 +58,6 @@ export const ScanCode = Template.bind({});
 ScanCode.args = {
   ViewFinder,
   videoId: 'video',
-  scanDelay: 500,
   constraints: {
     facingMode: 'user',
   },

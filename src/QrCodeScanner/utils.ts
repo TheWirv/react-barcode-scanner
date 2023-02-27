@@ -1,53 +1,52 @@
 import {MutableRefObject} from 'react';
-import {BrowserQRCodeReader, IScannerControls} from '@zxing/browser';
-import {OnResultFunction} from '../types';
-
-let v: unknown;
-const f = () => typeof v;
-
-export function isValidType(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any,
-  name: string,
-  type: ReturnType<typeof f>
-): boolean {
-  const isValid = typeof value === type;
-
-  if (!isValid) {
-    console.warn(
-      `[ReactQrCodeScanner]: Expected "${name}" to be a of type "${type}".`
-    );
-  }
-
-  return isValid;
-}
-
-export function getValidError(error: Error | undefined) {
-  return !!error && JSON.stringify(error) !== JSON.stringify({}) ? error : null;
-}
+import {IScannerControls, BrowserMultiFormatReader} from '@zxing/browser';
+import {
+  NotFoundException,
+  ChecksumException,
+  FormatException,
+} from '@zxing/library';
+import {QrCodeScannerProps} from '../types';
 
 export async function decodeQrCodeFromConstraints(
-  codeReader: BrowserQRCodeReader,
-  constraints: MediaTrackConstraints,
-  videoId: string,
-  onResult: OnResultFunction,
-  controlsRef: MutableRefObject<IScannerControls | null | undefined>
+  controlsRef: MutableRefObject<IScannerControls | undefined>,
+  codeReader: BrowserMultiFormatReader,
+  hasUnmountedRef: MutableRefObject<boolean>,
+  options: Pick<
+    QrCodeScannerProps,
+    'constraints' | 'videoId' | 'onSuccess' | 'onError'
+  >
 ): Promise<void> {
-  try {
-    if (controlsRef.current === undefined) {
-      controlsRef.current = await codeReader.decodeFromConstraints(
-        {audio: false, video: constraints},
-        videoId,
-        (result, error) => {
-          if (controlsRef.current === null) {
-            throw new Error('Component is unmounted');
-          }
+  const {constraints, videoId, onSuccess, onError} = options;
 
-          onResult(result, getValidError(error), codeReader);
+  try {
+    const controls = await codeReader.decodeFromConstraints(
+      {audio: false, video: constraints},
+      videoId,
+      (result, error) => {
+        if (result) {
+          onSuccess(result.getText());
+        } else if (
+          error &&
+          onError &&
+          !(
+            error instanceof NotFoundException ||
+            error instanceof ChecksumException ||
+            error instanceof FormatException
+          )
+        ) {
+          onError(error);
         }
-      );
+      }
+    );
+
+    if (!hasUnmountedRef.current) {
+      controlsRef.current = controls;
+    } else {
+      controls.stop();
     }
   } catch (error) {
-    onResult(null, getValidError(error as Error), codeReader);
+    if (error && onError) {
+      onError(error as Error);
+    }
   }
 }

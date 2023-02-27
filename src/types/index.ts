@@ -1,22 +1,36 @@
-import {CSSProperties, ReactElement} from 'react';
-import {BrowserQRCodeReader} from '@zxing/browser';
-import {Result} from '@zxing/library';
+import {ReactElement, CSSProperties} from 'react';
 
-export type QrCodeScannerProps = Partial<UseQrCodeScannerHookProps> & {
+export type QrCodeScannerProps = {
   /**
-   * Called when the video feed has been loaded.
+   * Controls whether the scanner should be scanning or not
+   */
+  doScan?: boolean;
+  /**
+   * Media track constraints object, to specify which camera and capabilities to use
+   */
+  constraints?: MediaTrackConstraints;
+  /**
+   * Callback for retrieving the result
+   */
+  onSuccess: (text: string) => void;
+  /**
+   * Callback for retrieving the error when one occurs
+   */
+  onError?: (e?: Error) => void;
+  /**
+   * Callback for when the video feed has been loaded
    */
   onLoad?: () => void;
+  /**
+   * Property that represents the ID of the video element
+   */
+  videoId?: string;
   /**
    * Property that represents the view finder component
    */
   ViewFinder?: () => ReactElement | null;
   /**
-   * Property that represents an optional className to modify styles
-   */
-  className?: string;
-  /**
-   * Property that represents a style for the container
+   * Property that represents a style for the wrapping container
    */
   containerStyle?: CSSProperties;
   /**
@@ -28,39 +42,3 @@ export type QrCodeScannerProps = Partial<UseQrCodeScannerHookProps> & {
    */
   videoStyle?: CSSProperties;
 };
-
-export type OnResultFunction = (
-  /**
-   * The QR values extracted by Zxing
-   */
-  result?: Result | null,
-  /**
-   * The name of the exceptions thrown while reading the QR
-   */
-  error?: Error | null,
-  /**
-   * The instance of the QR browser reader
-   */
-  codeReader?: BrowserQRCodeReader
-) => void;
-
-export type UseQrCodeScannerHookProps = {
-  /**
-   * Media track constraints object, to specify which camera and capabilities to use
-   */
-  constraints: MediaTrackConstraints;
-  /**
-   * Callback for retrieving the result or  when an error occurs.
-   */
-  onResult?: OnResultFunction;
-  /**
-   * Property that represents the scan period
-   */
-  scanDelay: number;
-  /**
-   * Property that represents the ID of the video element
-   */
-  videoId: string;
-};
-
-export type UseQrCodeScannerHook = (props: UseQrCodeScannerHookProps) => void;
