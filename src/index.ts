@@ -1,3 +1,3 @@
-import QrCodeScanner from './QrCodeScanner';
-export {QrCodeScanner};
+import BarcodeScanner from './BarcodeScanner';
+export {BarcodeScanner};
 export * from './types';

@@ -1,6 +1,6 @@
 import {ReactElement, CSSProperties} from 'react';
 
-export type QrCodeScannerProps = {
+export type BarcodeScannerProps = {
   /**
    * Controls whether the scanner should be scanning or not
    */

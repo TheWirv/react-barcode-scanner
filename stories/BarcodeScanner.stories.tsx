@@ -3,7 +3,7 @@ import {Story} from '@storybook/react';
 
 import {ViewFinder} from './ViewFinder';
 
-import {QrCodeScanner, QrCodeScannerProps} from '../lib/module';
+import {BarcodeScanner, BarcodeScannerProps} from '../lib/module';
 
 const styles = {
   container: {
@@ -14,7 +14,7 @@ const styles = {
 const defaultData = 'No result';
 const defaultError = 'No error';
 
-const Template: Story<QrCodeScannerProps> = (args) => {
+const Template: Story<BarcodeScannerProps> = (args) => {
   const [renderCamera, setRenderCamera] = useState(true);
   const [doScan, setDoScan] = useState(true);
   const [data, setData] = useState(defaultData);
@@ -30,7 +30,7 @@ const Template: Story<QrCodeScannerProps> = (args) => {
   return (
     <div style={styles.container}>
       {renderCamera ? (
-        <QrCodeScanner
+        <BarcodeScanner
           {...args}
           doScan={doScan}
           onSuccess={(text) => {
@@ -64,6 +64,6 @@ ScanCode.args = {
 };
 
 export default {
-  title: 'Browser QR Reader',
-  component: QrCodeScanner,
+  title: 'Browser Barcode Scanner',
+  component: BarcodeScanner,
 };

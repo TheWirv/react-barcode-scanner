@@ -8,11 +8,11 @@ import {
 } from 'react';
 import {BrowserMultiFormatReader, IScannerControls} from '@zxing/browser';
 import {FiCameraOff} from 'react-icons/fi';
-import {QrCodeScannerProps as Props} from '../types';
-import {decodeQrCodeFromConstraints} from './utils';
+import {BarcodeScannerProps as Props} from '../types';
+import {decodeBarcodeFromConstraints} from './utils';
 import {styles} from './styles';
 
-const QrCodeScanner = ({
+const BarcodeScanner = ({
   doScan = true,
   constraints = {facingMode: 'user'},
   onSuccess,
@@ -44,14 +44,14 @@ const QrCodeScanner = ({
         const message =
           'MediaDevices API has no support for your browser. You can fix this by running "npm i webrtc-adapter"';
 
-        console.warn(`[ReactQrCodeScanner]: ${message}`);
+        console.warn(`[ReactBarcodeScanner]: ${message}`);
         onError(new Error(message));
       }
 
       if (doScan) {
         controlsRef.current = undefined;
 
-        decodeQrCodeFromConstraints(controlsRef, codeReader, hasUnmountedRef, {
+        decodeBarcodeFromConstraints(controlsRef, codeReader, hasUnmountedRef, {
           constraints,
           videoId,
           onSuccess,
@@ -77,14 +77,14 @@ const QrCodeScanner = ({
   return (
     <section style={containerStyle}>
       {!isCameraInitialized && (
-        <div style={styles.qrCodeScannerError}>
-          <FiCameraOff size={300} style={styles.qrCodeScannerErrorSvg} />
+        <div style={styles.barcodeScannerError}>
+          <FiCameraOff size={300} style={styles.barcodeScannerErrorSvg} />
         </div>
       )}
       <div
         style={{
           ...styles.container,
-          ...(isCameraInitialized ? styles.qrCodeScannerVisible : {}),
+          ...(isCameraInitialized ? styles.barcodeScannerVisible : {}),
           ...videoContainerStyle,
         }}>
         <video
@@ -106,6 +106,6 @@ const QrCodeScanner = ({
   );
 };
 
-QrCodeScanner.displayName = 'QrCodeScanner';
+BarcodeScanner.displayName = 'BarcodeScanner';
 
-export default QrCodeScanner;
+export default BarcodeScanner;

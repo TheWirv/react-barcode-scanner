@@ -5,14 +5,14 @@ import {
   ChecksumException,
   FormatException,
 } from '@zxing/library';
-import {QrCodeScannerProps} from '../types';
+import {BarcodeScannerProps} from '../types';
 
-export async function decodeQrCodeFromConstraints(
+export async function decodeBarcodeFromConstraints(
   controlsRef: MutableRefObject<IScannerControls | undefined>,
   codeReader: BrowserMultiFormatReader,
   hasUnmountedRef: MutableRefObject<boolean>,
   options: Pick<
-    QrCodeScannerProps,
+    BarcodeScannerProps,
     'constraints' | 'videoId' | 'onSuccess' | 'onError'
   >
 ): Promise<void> {

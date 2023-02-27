@@ -30,7 +30,6 @@ rules:
   no-return-await: "error"
   react-hooks/exhaustive-deps:
     - "warn"
-    - additionalHooks: "useQrCodeScanner"
   "@typescript-eslint/ban-ts-comment": "off"
   "@typescript-eslint/no-new": "off"
   "@typescript-eslint/no-non-null-assertion": "off"

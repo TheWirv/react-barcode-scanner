@@ -1,19 +1,19 @@
 import {CSSProperties} from 'react';
 
 export const styles: Record<
-  | 'qrCodeScannerError'
-  | 'qrCodeScannerErrorSvg'
+  | 'barcodeScannerError'
+  | 'barcodeScannerErrorSvg'
   | 'container'
-  | 'qrCodeScannerVisible'
+  | 'barcodeScannerVisible'
   | 'video',
   CSSProperties
 > = {
-  qrCodeScannerError: {
+  barcodeScannerError: {
     border: '8px #eee solid',
     borderRadius: '10px',
     padding: '2rem',
   },
-  qrCodeScannerErrorSvg: {
+  barcodeScannerErrorSvg: {
     width: '75%',
     height: '75%',
     display: 'block',
@@ -27,7 +27,7 @@ export const styles: Record<
     position: 'relative',
     display: 'none',
   },
-  qrCodeScannerVisible: {
+  barcodeScannerVisible: {
     display: 'block',
   },
   video: {

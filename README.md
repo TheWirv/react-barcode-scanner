@@ -1,6 +1,6 @@
-# React QR Code Scanner [![npm version](https://badge.fury.io/js/@thewirv%2Freact-qr-code-scanner.svg)](https://badge.fury.io/js/@thewirv%2Freact-qr-code-scanner) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/TheWirv/react-qr-code-scanner/badge.svg)](https://snyk.io/test/github/TheWirv/react-qr-code-scanner)
+# React Barcode Scanner [![npm version](https://badge.fury.io/js/@thewirv%2Freact-barcode-scanner.svg)](https://badge.fury.io/js/@thewirv%2Freact-barcode-scanner) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/TheWirv/react-barcode-scanner/badge.svg)](https://snyk.io/test/github/TheWirv/react-barcode-scanner)
 
-:rocket: React QR Code Scanner component.
+:rocket: React Barcode Scanner component.
 
 ## Table of contents
 
@@ -10,7 +10,7 @@
   - [yarn](#yarn)
   - [npm](#npm)
 - [Example Usage](#example-usage)
-- [QrReader API](#component-api)
+- [BarcodeScanner API](#component-api)
 - [Browser support](#browser-support)
 - [Issues](#issues)
 - [Contributing](#contributing)
@@ -18,7 +18,7 @@
 
 ## Use Case
 
-You need a component for scanning QR codes from a web browser based app.
+You need a component for scanning QR codes or other barcodes from a web browser based app.
 
 ## Compatibility
 
@@ -30,6 +30,8 @@ This component has been tested in the following browsers:
 
 Since this library does internal use of hooks you need `React >= 16.8.0`.
 
+This library utilizes the [ZXing library](https://github.com/zxing-js/browser) and therefore supports all their [supported formats](https://github.com/zxing-js/library#supported-formats) of 1D and 2D barcodes.
+
 ## Installation
 
 You can install this library via yarn or npm.
@@ -37,13 +39,13 @@ You can install this library via yarn or npm.
 ### yarn
 
 ```bash
-yarn add @thewirv/react-qr-code-scanner
+yarn add @thewirv/react-barcode-scanner
 ```
 
 ### npm
 
 ```bash
-npm i @thewirv/react-qr-code-scanner
+npm i @thewirv/react-barcode-scanner
 ```
 
 ## Example Usage
@@ -52,14 +54,14 @@ After reading and performing the previous steps, you should be able to import th
 
 ```typescript
 import {useState} from 'react';
-import {QrCodeScanner} from '@thewirv/react-qr-code-scanner';
+import {BarcodeScanner} from '@thewirv/react-barcode-scanner';
 
 const Test = (props: Props) => {
   const [data, setData] = useState('No result');
 
   return (
     <>
-      <QrCodeScanner
+      <BarcodeScanner
         onSuccess={(text) => setData(text)}
         onError={(error) => {
           if (error) {
@@ -77,7 +79,7 @@ const Test = (props: Props) => {
 
 ## Component API
 
-The `QrCodeScanner` component has the following props:
+The `BarcodeScanner` component has the following props:
 
 | Properties            | Types                                                                                           | Default Value            | Required | Description                                              |
 | --------------------- | ----------------------------------------------------------------------------------------------- | ------------------------ | -------- | -------------------------------------------------------- |
@@ -104,12 +106,8 @@ If you need to support older browsers, checkout [this guide](https://github.com/
 
 ## Issues
 
-Please, open an [issue](https://github.com/react-qr-reader/react-qr-reader/issues) following one of the issues templates. We will do our best to fix them.
-
-## Contributing
-
-If you want to contribute to this project see [contributing](https://github.com/react-qr-reader/react-qr-reader/blob/master/CONTRIBUTING.md) for more information.
+Please, open an [issue](https://github.com/TheWirv/react-barcode-scanner/issues) following one of the issues templates. We will do our best to fix them.
 
 ## License
 
-Distributed under the **MIT license**. See [LICENSE](https://github.com/react-qr-reader/react-qr-reader/blob/master/LICENSE) for more information.
+Distributed under the **MIT license**. See [LICENSE](https://github.com/TheWirv/react-barcode-scanner/blob/master/LICENSE) for more information.
