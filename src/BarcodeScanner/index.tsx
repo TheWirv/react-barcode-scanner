@@ -27,12 +27,17 @@ const BarcodeScanner = ({
   const [isCameraInitialized, setIsCameraInitialized] = useState<boolean>();
   const codeReader = useMemo(() => new BrowserMultiFormatReader(), []);
   const hasUnmountedRef = useRef(false);
-  const controlsRef = useRef<IScannerControls>();
+  const controlsArrayRef = useRef<IScannerControls[]>([]);
   const videoRef = createRef<HTMLVideoElement>();
+
+  const cleanUpControls = () => {
+    controlsArrayRef.current.forEach(({stop}) => stop());
+    controlsArrayRef.current = [];
+  };
 
   useEffect(
     () => () => {
-      controlsRef.current?.stop();
+      cleanUpControls();
       hasUnmountedRef.current = true;
     },
     []
@@ -49,18 +54,23 @@ const BarcodeScanner = ({
       }
 
       if (doScan) {
-        controlsRef.current = undefined;
-
-        decodeBarcodeFromConstraints(controlsRef, codeReader, hasUnmountedRef, {
-          constraints,
-          videoId,
-          onSuccess,
-          onError,
-        });
+        decodeBarcodeFromConstraints(
+          controlsArrayRef,
+          codeReader,
+          hasUnmountedRef,
+          {
+            constraints,
+            videoId,
+            onSuccess,
+            onError,
+          }
+        );
       } else {
-        controlsRef.current?.stop();
+        cleanUpControls();
       }
     }
+
+    return cleanUpControls;
   }, [onSuccess, onError, doScan, codeReader, constraints, videoId]);
 
   const onLoadedData: ReactEventHandler<HTMLVideoElement> = () => {

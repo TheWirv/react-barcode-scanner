@@ -1,9 +1,12 @@
 import {useState} from 'react';
-import {Story} from '@storybook/react';
+import {ComponentStory, ComponentMeta} from '@storybook/react';
 
 import {ViewFinder} from './ViewFinder';
+import {BarcodeScanner} from '../src';
 
-import {BarcodeScanner, BarcodeScannerProps} from '../lib/module';
+export default {component: BarcodeScanner} as ComponentMeta<
+  typeof BarcodeScanner
+>;
 
 const styles = {
   container: {
@@ -14,7 +17,7 @@ const styles = {
 const defaultData = 'No result';
 const defaultError = 'No error';
 
-const Template: Story<BarcodeScannerProps> = (args) => {
+const Template: ComponentStory<typeof BarcodeScanner> = (args) => {
   const [renderCamera, setRenderCamera] = useState(true);
   const [doScan, setDoScan] = useState(true);
   const [data, setData] = useState(defaultData);
@@ -54,16 +57,8 @@ const Template: Story<BarcodeScannerProps> = (args) => {
 };
 
 export const ScanCode = Template.bind({});
-
 ScanCode.args = {
   ViewFinder,
   videoId: 'video',
-  constraints: {
-    facingMode: 'user',
-  },
-};
-
-export default {
-  title: 'Browser Barcode Scanner',
-  component: BarcodeScanner,
+  constraints: {facingMode: 'user'},
 };

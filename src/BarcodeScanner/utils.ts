@@ -8,7 +8,7 @@ import {
 import {BarcodeScannerProps} from '../types';
 
 export async function decodeBarcodeFromConstraints(
-  controlsRef: MutableRefObject<IScannerControls | undefined>,
+  controlsArrayRef: MutableRefObject<IScannerControls[]>,
   codeReader: BrowserMultiFormatReader,
   hasUnmountedRef: MutableRefObject<boolean>,
   options: Pick<
@@ -40,7 +40,7 @@ export async function decodeBarcodeFromConstraints(
     );
 
     if (!hasUnmountedRef.current) {
-      controlsRef.current = controls;
+      controlsArrayRef.current.push(controls);
     } else {
       controls.stop();
     }
