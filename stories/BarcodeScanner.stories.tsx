@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {ComponentStory, ComponentMeta} from '@storybook/react';
 
-import {ViewFinder} from './ViewFinder';
+import {Viewfinder} from './Viewfinder';
 import {BarcodeScanner} from '../src';
 
 export default {component: BarcodeScanner} as ComponentMeta<
@@ -58,7 +58,7 @@ const Template: ComponentStory<typeof BarcodeScanner> = (args) => {
 
 export const ScanCode = Template.bind({});
 ScanCode.args = {
-  ViewFinder,
+  Viewfinder,
   videoId: 'video',
   constraints: {facingMode: 'user'},
 };

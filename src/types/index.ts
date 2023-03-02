@@ -26,9 +26,9 @@ export type BarcodeScannerProps = {
    */
   videoId?: string;
   /**
-   * Property that represents the view finder component
+   * Property that represents the viewfinder component
    */
-  ViewFinder?: () => ReactElement | null;
+  Viewfinder?: () => ReactElement | null;
   /**
    * Property that represents a style for the wrapping container
    */

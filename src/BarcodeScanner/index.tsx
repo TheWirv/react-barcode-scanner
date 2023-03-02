@@ -19,7 +19,7 @@ const BarcodeScanner = ({
   onError,
   onLoad,
   videoId = 'video',
-  ViewFinder,
+  Viewfinder,
   containerStyle,
   videoContainerStyle,
   videoStyle,
@@ -110,7 +110,7 @@ const BarcodeScanner = ({
             }`,
           }}
         />
-        {!!ViewFinder && <ViewFinder />}
+        {!!Viewfinder && <Viewfinder />}
       </div>
     </section>
   );
