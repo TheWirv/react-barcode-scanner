@@ -32,29 +32,40 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rollup --config rollup.config.ts --configPlugin typescript",
+    "build": "rimraf dist -I && rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript",
     "prepublish": "yarn build",
     "lint": "eslint --fix 'src/**'",
     "prepare": "husky"
   },
-  "main": "lib/commonjs/index.js",
-  "source": "src/index.ts",
-  "module": "lib/module/index.js",
-  "types": "lib/module/index.d.ts",
+  "source": "./src/index.ts",
+  "main": "./dist/main.js",
+  "module": "./dist/main.mjs",
+  "types": "./dist/main.d.ts",
   "files": [
-    "lib"
+    "dist",
+    "LICENSE",
+    "README.md"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/main.mjs",
+      "require": "./dist/main.js",
+      "types": "./dist/main.d.ts",
+      "source": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "dependencies": {
     "@zxing/browser": "^0.1.4",
-    "@zxing/library": "^0.21.0",
-    "react-icons": "^5.2.1"
+    "@zxing/library": "^0.21.0"
   },
   "devDependencies": {
-    "@chrisneedham/rollup-plugin-peer-deps-external": "^2.3.1",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@rollup/plugin-buble": "^1.0.3",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-sucrase": "^5.0.2",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/react": "^18.3.2",
@@ -68,7 +79,10 @@
     "prettier": "^3.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.2.1",
+    "rimraf": "^5.0.7",
     "rollup": "^4.18.0",
+    "rollup-plugin-cjs-check": "^1.0.3",
     "rollup-plugin-dts": "^6.1.1",
     "tslib": "^2.6.2",
     "typescript": "^5.4.5",
@@ -76,11 +90,15 @@
   },
   "peerDependencies": {
     "react": "^16.8.0 || 17.x || 18.x",
-    "react-dom": "^16.8.0 || 17.x || 18.x"
+    "react-dom": "^16.8.0 || 17.x || 18.x",
+    "react-icons": ">=4.8"
   },
   "lint-staged": {
     "*.{ts,tsx,js,json,css,md,scss}": [
       "prettier --write"
     ]
+  },
+  "resolutions": {
+    "@types/buble@npm:^0.19.2": "patch:@types/buble@npm%3A0.19.2#~/.yarn/patches/@types-buble-npm-0.19.2-14cb6d2540.patch"
   }
 }
