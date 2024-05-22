@@ -4,7 +4,7 @@
   "description": "A React component for scanning QR codes and other barcodes via webcam",
   "author": "Marcel Grünwald",
   "license": "MIT",
-  "packageManager": "yarn@4.2.2",
+  "packageManager": "npm@10.8.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TheWirv/react-barcode-scanner.git"
@@ -33,9 +33,10 @@
   },
   "scripts": {
     "build": "rimraf dist -I && rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript",
-    "prepublish": "yarn build",
+    "prepublish": "bun run build",
     "lint": "eslint --fix 'src/**'",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "bunx patch-package"
   },
   "source": "./src/index.ts",
   "main": "./dist/main.js",
@@ -76,6 +77,8 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.4",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -98,7 +101,7 @@
       "prettier --write"
     ]
   },
-  "resolutions": {
-    "@types/buble@npm:^0.19.2": "patch:@types/buble@npm%3A0.19.2#~/.yarn/patches/@types-buble-npm-0.19.2-14cb6d2540.patch"
-  }
+  "trustedDependencies": [
+    "postinstall-postinstall"
+  ]
 }

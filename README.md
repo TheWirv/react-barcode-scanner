@@ -7,6 +7,7 @@
 - [Use Case](#use-case)
 - [Compatibility](#compatibility)
 - [Installation](#installation)
+  - [bun](#bun)
   - [yarn](#yarn)
   - [npm](#npm)
 - [Example Usage](#example-usage)
@@ -34,7 +35,13 @@ This library utilizes the [ZXing library](https://github.com/zxing-js/browser) a
 
 ## Installation
 
-You can install this library via yarn or npm.
+You can install this library via bun, yarn, or npm.
+
+### bun
+
+```bash
+bun add @thewirv/react-barcode-scanner
+```
 
 ### yarn
 

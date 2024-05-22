@@ -1,7 +1,7 @@
-diff --git a/index.d.ts b/index.d.ts
-index 5ac6a96ac6bb03987005bd8cceb1284d9e95b9ac..fa6eea83a33df0a154ed5c93e4f38f86a98229e0 100644
---- a/index.d.ts
-+++ b/index.d.ts
+diff --git a/node_modules/@types/buble/index.d.ts b/node_modules/@types/buble/index.d.ts
+index 5ac6a96..fa6eea8 100644
+--- a/node_modules/@types/buble/index.d.ts
++++ b/node_modules/@types/buble/index.d.ts
 @@ -31,6 +31,7 @@ export interface TransformOptions {
      // transforms
      transforms?: {
