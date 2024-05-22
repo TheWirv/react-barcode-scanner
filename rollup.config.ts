@@ -1,12 +1,10 @@
-import type {RollupOptions} from 'rollup';
+import type { RollupOptions } from 'rollup';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
-import {terser} from 'rollup-plugin-terser';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import terser from '@rollup/plugin-terser';
+import peerDepsExternal from '@chrisneedham/rollup-plugin-peer-deps-external';
 import dts from 'rollup-plugin-dts';
-// @ts-ignore: There are no types for the Web Worker plugin
-import webWorkerLoader from 'rollup-plugin-web-worker-loader';
 import packageJson from './package.json' assert {type: 'json'};
 
 const config: RollupOptions[] = [
@@ -25,9 +23,8 @@ const config: RollupOptions[] = [
       },
     ],
     plugins: [
-      webWorkerLoader(),
       peerDepsExternal(),
-      nodeResolve({extensions: ['.js', '.jsx', '.ts', '.tsx']}),
+      nodeResolve({ extensions: ['.ts', '.tsx'] }),
       commonjs(),
       typescript({
         tsconfig: './tsconfig.json',
