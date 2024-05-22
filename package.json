@@ -48,9 +48,9 @@
     "lib"
   ],
   "dependencies": {
-    "@zxing/browser": "0.1.1",
-    "@zxing/library": "^0.19.2",
-    "react-icons": "^4.7.1"
+    "@zxing/browser": "^0.1.4",
+    "@zxing/library": "^0.21.0",
+    "react-icons": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
