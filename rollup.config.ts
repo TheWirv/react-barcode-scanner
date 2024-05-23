@@ -1,152 +1,74 @@
-import type {RollupOptions, InputPluginOption, OutputOptions} from 'rollup';
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import sucrase from '@rollup/plugin-sucrase';
-import buble from '@rollup/plugin-buble';
+import type {MergedRollupOptions} from 'rollup';
 import terser from '@rollup/plugin-terser';
-import cjsCheck from 'rollup-plugin-cjs-check';
-import dts from 'rollup-plugin-dts';
+import typescript from '@rollup/plugin-typescript';
+import {dts} from 'rollup-plugin-dts';
+import pkg from './package.json' assert {type: 'json'};
 
-const commonPlugins: InputPluginOption = [
-  resolve({
-    extensions: ['.mjs', '.js', '.ts'],
-    mainFields: ['module', 'jsnext', 'main'],
-    preferBuiltins: false,
-    browser: true,
-  }),
+type Format = 'cjs' | 'esm';
 
-  commonjs({
-    ignoreGlobal: true,
-    include: /\/node_modules\//,
-    extensions: ['.mjs', '.js', '.ts'],
-  }),
+const {warn, ...consoleWithoutWarn} = console;
+const drop_console = Object.keys(
+  consoleWithoutWarn
+) as (keyof typeof consoleWithoutWarn)[];
 
-  sucrase({
-    exclude: ['node_modules/**'],
-    transforms: ['typescript', 'jsx'],
-  }),
-];
+function createJsConfig(format: Format, isMinified?: boolean) {
+  const isEsmModule = format === 'esm';
+  const outputName = `./dist/index${isMinified ? '.min' : ''}.${isEsmModule ? 'js' : 'cjs'}`;
+  const ecma = isEsmModule ? 2015 : 5;
 
-const jsPlugins = (isMinified?: boolean): InputPluginOption => [
-  ...commonPlugins,
-  cjsCheck(),
-
-  buble({
-    transforms: {
-      asyncAwait: false,
-      stickyRegExp: false,
-      unicodeRegExp: false,
-      defaultParameter: false,
-      dangerousForOf: true,
-      dangerousTaggedTemplateString: true,
-      destructuring: false,
-      arrow: false,
-      classes: false,
-      computedProperty: false,
-      conciseMethodProperty: false,
-      templateString: false,
-      parameterDestructuring: false,
-      spreadRest: false,
-    },
-    exclude: 'node_modules/**',
-    objectAssign: 'Object.assign',
-  }),
-
-  terser({
-    ecma: 2015,
-    keep_fnames: true,
-    ie8: false,
-    compress: {
-      pure_getters: true,
-      toplevel: true,
-      booleans_as_integers: false,
-      keep_fnames: true,
-      keep_fargs: true,
-      if_return: false,
-      ie8: false,
-      sequences: false,
-      loops: false,
-      conditionals: false,
-      join_vars: false,
-    },
-    mangle: {
-      module: true,
-      keep_fnames: true,
-    },
-    output: !isMinified
-      ? {
-          beautify: true,
-          braces: true,
-          indent_level: 2,
-        }
-      : undefined,
-  }),
-];
-
-const output = (format: 'esm' | 'cjs', isMinified?: boolean): OutputOptions => {
-  let extension = format === 'esm' ? '.mjs' : '.js';
-
-  if (isMinified) {
-    extension = '.min' + extension;
-  }
-
-  return {
-    chunkFileNames: '[hash]' + extension,
-    entryFileNames: '[name]' + extension,
-    dir: './dist',
-    exports: 'named',
-    sourcemap: true,
-    sourcemapExcludeSources: false,
-    indent: false,
-    freeze: false,
-    strict: false,
-    format,
-    // NOTE: All below settings are important for cjs-module-lexer to detect the export
-    // When this changes (and terser mangles the output) this will interfere with Node.js ESM intercompatibility
-    esModule: format !== 'esm',
-    externalLiveBindings: format !== 'esm',
-    generatedCode: {
-      preset: 'es5',
-      reservedNamesAsProps: false,
-      objectShorthand: false,
-      constBindings: false,
-    },
+  const config: MergedRollupOptions = {
+    input: pkg.source,
+    output: [
+      {
+        file: outputName,
+        format,
+        sourcemap: true,
+        globals: {react: 'React'},
+        exports: 'named',
+      },
+    ],
+    plugins: [
+      typescript(),
+      ...(isMinified
+        ? [
+            terser({
+              compress: {
+                drop_console,
+                ecma,
+                passes: 2,
+                toplevel: true,
+                module: isEsmModule,
+                unsafe: true,
+                unsafe_arrows: isEsmModule,
+                unsafe_proto: true,
+                unsafe_regexp: true,
+              },
+              mangle: {module: isEsmModule},
+              module: isEsmModule,
+              format: {comments: false, ecma},
+              toplevel: true,
+            }),
+          ]
+        : []),
+    ],
+    external: Object.keys(pkg.peerDependencies),
   };
+
+  return config;
+}
+
+const dtsConfig: MergedRollupOptions = {
+  input: './dist/src/index.d.ts',
+  output: [{file: './dist/index.d.ts', format: 'esm'}],
+  plugins: [dts()],
 };
 
-const commonConfig = {
-  input: {
-    main: './src/index.ts',
-  },
-  onwarn: () => {},
-  external: () => false,
-  treeshake: {
-    unknownGlobalSideEffects: false,
-    tryCatchDeoptimization: false,
-    moduleSideEffects: false,
-  },
-};
+const formats: Format[] = ['cjs', 'esm'];
 
-const jsConfig: RollupOptions = {
-  ...commonConfig,
-  plugins: jsPlugins(),
-  output: [output('esm'), output('cjs')],
-};
+const configs = formats
+  .map((format) => [createJsConfig(format), createJsConfig(format, true)])
+  .flat();
 
-const jsMinConfig: RollupOptions = {
-  ...commonConfig,
-  plugins: jsPlugins(true),
-  output: [output('esm', true), output('cjs', true)],
-};
+configs.push(dtsConfig);
 
-const dtsConfig: RollupOptions = {
-  ...commonConfig,
-  plugins: [...commonPlugins, dts()],
-  output: {
-    dir: './dist',
-    entryFileNames: '[name].d.ts',
-    format: 'esm',
-  } as OutputOptions,
-};
-
-export default [jsConfig, jsMinConfig, dtsConfig];
+export default configs;

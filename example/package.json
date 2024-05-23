@@ -42,7 +42,6 @@
     ]
   },
   "trustedDependencies": [
-    "@thewirv/react-barcode-scanner",
     "core-js",
     "core-js-pure"
   ]
