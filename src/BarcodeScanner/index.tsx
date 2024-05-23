@@ -1,19 +1,13 @@
-import {
-  useState,
-  useMemo,
-  useRef,
-  useEffect,
-  ReactEventHandler,
-} from 'react';
-import { BrowserMultiFormatReader, IScannerControls } from '@zxing/browser';
-import { FiCameraOff } from 'react-icons/fi';
-import { BarcodeScannerProps as Props } from '../types';
-import { decodeBarcodeFromConstraints } from './utils';
-import { styles } from './styles';
+import {useState, useMemo, useRef, useEffect, ReactEventHandler} from 'react';
+import {BrowserMultiFormatReader, IScannerControls} from '@zxing/browser';
+import {FiCameraOff} from 'react-icons/fi';
+import {BarcodeScannerProps as Props} from '../types';
+import {decodeBarcodeFromConstraints} from './utils';
+import {styles} from './styles';
 
 const BarcodeScanner = ({
   doScan = true,
-  constraints = { facingMode: 'user' },
+  constraints = {facingMode: 'user'},
   onSuccess,
   onError,
   onLoad,
@@ -30,26 +24,23 @@ const BarcodeScanner = ({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const cleanUpControls = () => {
-    controlsArrayRef.current.forEach(({ stop }) => {
+    controlsArrayRef.current.forEach(({stop}) => {
       stop();
     });
     controlsArrayRef.current = [];
   };
 
-  useEffect(
-    () => {
-      return () => {
-        cleanUpControls();
-        hasUnmountedRef.current = true;
-      }
-    },
-    []
-  );
+  useEffect(() => {
+    return () => {
+      cleanUpControls();
+      hasUnmountedRef.current = true;
+    };
+  }, []);
 
   useEffect(() => {
     const cleanup = () => {
       cleanUpControls();
-    }
+    };
 
     if (!doScan || !isCameraInitialized) {
       cleanUpControls();
@@ -57,7 +48,7 @@ const BarcodeScanner = ({
     }
 
     if (!onSuccess || !onError) {
-      return cleanup
+      return cleanup;
     }
 
     if (!navigator?.mediaDevices) {
@@ -82,11 +73,19 @@ const BarcodeScanner = ({
     );
 
     return cleanup;
-  }, [onSuccess, onError, doScan, codeReader, isCameraInitialized, constraints, videoId]);
+  }, [
+    onSuccess,
+    onError,
+    doScan,
+    codeReader,
+    isCameraInitialized,
+    constraints,
+    videoId,
+  ]);
 
   const onLoadedData: ReactEventHandler<HTMLVideoElement> = () => {
     if (videoRef.current) {
-      const { readyState, HAVE_ENOUGH_DATA } = videoRef.current;
+      const {readyState, HAVE_ENOUGH_DATA} = videoRef.current;
 
       if (readyState === HAVE_ENOUGH_DATA) {
         setIsCameraInitialized(true);
@@ -119,8 +118,9 @@ const BarcodeScanner = ({
           style={{
             ...styles.video,
             ...videoStyle,
-            transform: `${videoStyle?.transform ?? ''} ${constraints.facingMode === 'user' ? 'scaleX(-1)' : ''
-              }`,
+            transform: `${videoStyle?.transform ?? ''} ${
+              constraints.facingMode === 'user' ? 'scaleX(-1)' : ''
+            }`,
           }}
         />
         {!Viewfinder ? null : <Viewfinder />}

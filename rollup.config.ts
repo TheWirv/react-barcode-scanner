@@ -1,6 +1,7 @@
 import type {MergedRollupOptions} from 'rollup';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import sourcemaps from 'rollup-plugin-sourcemaps';
 import {dts} from 'rollup-plugin-dts';
 import pkg from './package.json' assert {type: 'json'};
 
@@ -23,12 +24,14 @@ function createJsConfig(format: Format, isMinified?: boolean) {
         file: outputName,
         format,
         sourcemap: true,
+        sourcemapExcludeSources: true,
         globals: {react: 'React'},
         exports: 'named',
       },
     ],
     plugins: [
       typescript(),
+      sourcemaps(),
       ...(isMinified
         ? [
             terser({
