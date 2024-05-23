@@ -3,15 +3,16 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <>
+      <h1>Vite + React</h1>
+      <div className="card">
         <BarcodeScanner
           onScan={(text) => {
             console.log('Successfully scanned this text:', text);
           }}
         />
-      </header>
-    </div>
+      </div>
+    </>
   );
 }
 
