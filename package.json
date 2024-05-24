@@ -4,7 +4,6 @@
   "description": "A React component for scanning QR codes and other barcodes via webcam",
   "author": "Marcel Grünwald",
   "license": "MIT",
-  "packageManager": "npm@10.8.0",
   "type": "module",
   "repository": {
     "type": "git",

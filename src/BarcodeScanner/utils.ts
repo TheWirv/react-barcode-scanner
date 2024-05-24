@@ -1,5 +1,5 @@
-import {MutableRefObject} from 'react';
-import {IScannerControls, BrowserMultiFormatReader} from '@zxing/browser';
+import {RefObject} from 'react';
+import {BrowserMultiFormatReader} from '@zxing/browser';
 import {
   NotFoundException,
   ChecksumException,
@@ -8,44 +8,33 @@ import {
 import {BarcodeScannerProps} from '../types';
 
 export async function decodeBarcodeFromConstraints(
-  controlsArrayRef: MutableRefObject<IScannerControls[]>,
   codeReader: BrowserMultiFormatReader,
-  hasUnmountedRef: MutableRefObject<boolean>,
-  options: Pick<
-    BarcodeScannerProps,
-    'constraints' | 'videoId' | 'onSuccess' | 'onError'
-  >
+  videoElement: RefObject<HTMLVideoElement>,
+  {
+    constraints,
+    onSuccess,
+    onError,
+  }: Pick<BarcodeScannerProps, 'constraints' | 'onSuccess' | 'onError'>
 ): Promise<void> {
-  const {constraints, videoId, onSuccess, onError} = options;
+  if (!videoElement.current) return;
 
   try {
-    const controls = await codeReader.decodeFromConstraints(
-      {audio: false, video: constraints},
-      videoId,
-      (result, error) => {
-        if (result) {
-          onSuccess(result.getText());
-        } else if (
-          error &&
-          onError &&
-          !(
-            error instanceof NotFoundException ||
-            error instanceof ChecksumException ||
-            error instanceof FormatException
-          )
-        ) {
-          onError(error);
-        }
-      }
+    const result = await codeReader.decodeOnceFromConstraints(
+      {audio: false, video: constraints, preferCurrentTab: true},
+      videoElement.current
     );
 
-    if (!hasUnmountedRef.current) {
-      controlsArrayRef.current.push(controls);
-    } else {
-      controls.stop();
-    }
+    onSuccess(result.getText());
   } catch (error) {
-    if (error && onError) {
+    if (
+      error &&
+      onError &&
+      !(
+        error instanceof NotFoundException ||
+        error instanceof ChecksumException ||
+        error instanceof FormatException
+      )
+    ) {
       onError(error as Error);
     }
   }

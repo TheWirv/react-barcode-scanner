@@ -63,7 +63,6 @@ function BarcodeScanner({description, onScan, onError}: Props) {
             setError(errorMessage);
             onError && onError();
           }}
-          constraints={{facingMode: 'environment'}}
           videoContainerStyle={{...videoStyle, paddingTop: 0}}
           videoStyle={videoStyle}
           Viewfinder={() => (
@@ -74,6 +73,11 @@ function BarcodeScanner({description, onScan, onError}: Props) {
           )}
         />
       </div>
+      <button
+        onMouseDown={() => setDoScan((prev) => !prev)}
+        style={{marginTop: 12}}>
+        Toggle
+      </button>
     </>
   );
 }

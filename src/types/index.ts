@@ -6,7 +6,8 @@ export type BarcodeScannerProps = {
    */
   doScan?: boolean;
   /**
-   * Media track constraints object, to specify which camera and capabilities to use
+   * Media track constraints object, to specify which camera and capabilities to use.
+   * By default, an object with `facingMode: 'environment'` is passed
    */
   constraints?: MediaTrackConstraints;
   /**
@@ -16,15 +17,11 @@ export type BarcodeScannerProps = {
   /**
    * Callback for retrieving the error when one occurs
    */
-  onError?: (e?: Error) => void;
+  onError: (e?: Error) => void;
   /**
    * Callback for when the video feed has been loaded
    */
   onLoad?: () => void;
-  /**
-   * Property that represents the ID of the video element
-   */
-  videoId?: string;
   /**
    * Property that represents the viewfinder component
    */

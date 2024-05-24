@@ -1,5 +1,5 @@
 import {useState, useMemo, useRef, useEffect, ReactEventHandler} from 'react';
-import {BrowserMultiFormatReader, IScannerControls} from '@zxing/browser';
+import {BrowserMultiFormatReader} from '@zxing/browser';
 import {FiCameraOff} from 'react-icons/fi';
 import {BarcodeScannerProps as Props} from '../types';
 import {decodeBarcodeFromConstraints} from './utils';
@@ -7,11 +7,10 @@ import {styles} from './styles';
 
 const BarcodeScanner = ({
   doScan = true,
-  constraints = {facingMode: 'user'},
+  constraints = {facingMode: 'environment'},
   onSuccess,
   onError,
   onLoad,
-  videoId = 'video',
   Viewfinder,
   containerStyle,
   videoContainerStyle,
@@ -19,36 +18,12 @@ const BarcodeScanner = ({
 }: Props) => {
   const [isCameraInitialized, setIsCameraInitialized] = useState(false);
   const codeReader = useMemo(() => new BrowserMultiFormatReader(), []);
-  const hasUnmountedRef = useRef(false);
-  const controlsArrayRef = useRef<IScannerControls[]>([]);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const cleanUpControls = () => {
-    controlsArrayRef.current.forEach(({stop}) => {
-      stop();
-    });
-    controlsArrayRef.current = [];
-  };
+  const videoElement = useRef<HTMLVideoElement>(null);
+  const isShowingDisabledImage = !isCameraInitialized || !doScan;
 
   useEffect(() => {
-    return () => {
-      cleanUpControls();
-      hasUnmountedRef.current = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    const cleanup = () => {
-      cleanUpControls();
-    };
-
-    if (!doScan || !isCameraInitialized) {
-      cleanUpControls();
-      return cleanup;
-    }
-
-    if (!onSuccess || !onError) {
-      return cleanup;
+    if (!doScan || !onSuccess || !onError) {
+      return;
     }
 
     if (!navigator?.mediaDevices) {
@@ -57,49 +32,33 @@ const BarcodeScanner = ({
 
       console.warn(`[ReactBarcodeScanner]: ${message}`);
       onError(new Error(message));
-      return cleanup;
+      return;
     }
 
-    decodeBarcodeFromConstraints(
-      controlsArrayRef,
-      codeReader,
-      hasUnmountedRef,
-      {
-        constraints,
-        videoId,
-        onSuccess,
-        onError,
-      }
-    );
+    decodeBarcodeFromConstraints(codeReader, videoElement, {
+      constraints,
+      onSuccess,
+      onError,
+    });
+  }, [onSuccess, onError, doScan, codeReader, constraints]);
 
-    return cleanup;
-  }, [
-    onSuccess,
-    onError,
-    doScan,
-    codeReader,
-    isCameraInitialized,
-    constraints,
-    videoId,
-  ]);
+  const onLoadedData: ReactEventHandler<HTMLVideoElement> = ({nativeEvent}) => {
+    const eventTarget = nativeEvent.target as HTMLVideoElement | null;
 
-  const onLoadedData: ReactEventHandler<HTMLVideoElement> = () => {
-    if (videoRef.current) {
-      const {readyState, HAVE_ENOUGH_DATA} = videoRef.current;
+    if (!eventTarget?.readyState) return;
 
-      if (readyState === HAVE_ENOUGH_DATA) {
-        setIsCameraInitialized(true);
+    if (eventTarget.readyState === eventTarget.HAVE_ENOUGH_DATA) {
+      setIsCameraInitialized(true);
 
-        if (onLoad) {
-          onLoad();
-        }
+      if (onLoad) {
+        onLoad();
       }
     }
   };
 
   return (
     <section style={containerStyle}>
-      {isCameraInitialized ? null : (
+      {isShowingDisabledImage && (
         <div style={styles.barcodeScannerError}>
           <FiCameraOff size={300} style={styles.barcodeScannerErrorSvg} />
         </div>
@@ -107,14 +66,15 @@ const BarcodeScanner = ({
       <div
         style={{
           ...styles.container,
-          ...(isCameraInitialized ? styles.barcodeScannerVisible : {}),
+          ...(!isShowingDisabledImage ? styles.barcodeScannerVisible : {}),
           ...videoContainerStyle,
         }}>
         <video
-          ref={videoRef}
+          ref={videoElement}
+          playsInline
+          disablePictureInPicture
           muted
           onLoadedData={onLoadedData}
-          id={videoId}
           style={{
             ...styles.video,
             ...videoStyle,
@@ -123,7 +83,7 @@ const BarcodeScanner = ({
             }`,
           }}
         />
-        {!Viewfinder ? null : <Viewfinder />}
+        {!!Viewfinder && <Viewfinder />}
       </div>
     </section>
   );
