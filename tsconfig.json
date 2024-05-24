@@ -1,16 +1,21 @@
 {
   "compilerOptions": {
     "outDir": ".",
-    "rootDirs": ["src"],
+    "rootDirs": [
+      "src"
+    ],
     "baseUrl": "src",
-    "module": "esnext",
-    "target": "es2015",
-    "lib": ["es5", "es6", "es7", "es2017", "dom"],
+    "module": "ESNext",
+    "target": "ESNext",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "strict": true,
     "sourceMap": true,
     "allowJs": false,
     "jsx": "react-jsx",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
@@ -22,6 +27,11 @@
     "noEmit": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*", "rollup.config.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*",
+    "rollup.config.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

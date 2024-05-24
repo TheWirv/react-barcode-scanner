@@ -1,9 +1,8 @@
 import type {MergedRollupOptions} from 'rollup';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
-import sourcemaps from 'rollup-plugin-sourcemaps';
 import {dts} from 'rollup-plugin-dts';
-import pkg from './package.json' assert {type: 'json'};
+import packageJson from './package.json' with {type: 'json'};
 
 type Format = 'cjs' | 'esm';
 
@@ -18,20 +17,22 @@ function createJsConfig(format: Format, isMinified?: boolean) {
   const ecma = isEsmModule ? 2015 : 5;
 
   const config: MergedRollupOptions = {
-    input: pkg.source,
+    input: packageJson.source,
     output: [
       {
         file: outputName,
         format,
-        sourcemap: true,
-        sourcemapExcludeSources: true,
+        sourcemap: false,
         globals: {react: 'React'},
         exports: 'named',
       },
     ],
     plugins: [
-      typescript(),
-      sourcemaps(),
+      typescript({
+        module: isEsmModule ? 'ESNext' : 'ES2015',
+        target: isEsmModule ? 'ESNext' : 'ES5',
+        compilerOptions: {sourceMap: false},
+      }),
       ...(isMinified
         ? [
             terser({
@@ -54,7 +55,7 @@ function createJsConfig(format: Format, isMinified?: boolean) {
           ]
         : []),
     ],
-    external: Object.keys(pkg.peerDependencies),
+    external: Object.keys(packageJson.peerDependencies),
   };
 
   return config;
