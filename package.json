@@ -1,6 +1,6 @@
 {
   "name": "@thewirv/react-barcode-scanner",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "description": "A React component for scanning QR codes and other barcodes via webcam",
   "author": "Marcel Grünwald",
   "license": "MIT",
@@ -58,7 +58,8 @@
         "require": "./dist/index.min.cjs",
         "types": "./dist/index.d.ts",
         "source": "./src/index.ts"
-      }
+      },
+      "default": "./dist/index.min.cjs"
     },
     "./package.json": "./package.json"
   },
