@@ -1,4 +1,11 @@
-import {useState, useMemo, useRef, useEffect, ReactEventHandler} from 'react';
+import {
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+  VideoHTMLAttributes,
+  SyntheticEvent,
+} from 'react';
 import {BrowserMultiFormatReader} from '@zxing/browser';
 import {FiCameraOff} from 'react-icons/fi';
 import {BarcodeScannerProps as Props} from '../types';
@@ -15,6 +22,7 @@ const BarcodeScanner = ({
   containerStyle,
   videoContainerStyle,
   videoStyle,
+  videoProps: passedVideoProps,
 }: Props) => {
   const [isCameraInitialized, setIsCameraInitialized] = useState(false);
   const codeReader = useMemo(() => new BrowserMultiFormatReader(), []);
@@ -42,19 +50,45 @@ const BarcodeScanner = ({
     });
   }, [onSuccess, onError, doScan, codeReader, constraints]);
 
-  const onLoadedData: ReactEventHandler<HTMLVideoElement> = ({nativeEvent}) => {
-    const eventTarget = nativeEvent.target as HTMLVideoElement | null;
+  const videoProps = useMemo(() => {
+    function onLoadedData({
+      nativeEvent,
+    }: SyntheticEvent<HTMLVideoElement, Event>) {
+      const eventTarget = nativeEvent.target as HTMLVideoElement | null;
 
-    if (!eventTarget?.readyState) return;
+      if (!eventTarget?.readyState) return;
 
-    if (eventTarget.readyState === eventTarget.HAVE_ENOUGH_DATA) {
-      setIsCameraInitialized(true);
+      if (eventTarget.readyState === eventTarget.HAVE_ENOUGH_DATA) {
+        setIsCameraInitialized(true);
 
-      if (onLoad) {
-        onLoad();
+        if (onLoad) {
+          onLoad();
+        }
       }
     }
-  };
+
+    const defaultVideoProps: VideoHTMLAttributes<HTMLVideoElement> = {
+      autoPlay: true,
+      playsInline: true,
+      disablePictureInPicture: true,
+      disableRemotePlayback: true,
+      muted: true,
+      onLoadedData: onLoadedData,
+      style: {
+        ...styles.video,
+        ...videoStyle,
+        transform: `${videoStyle?.transform ?? ''} ${
+          constraints.facingMode === 'user' ? 'scaleX(-1)' : ''
+        }`,
+      },
+    };
+
+    if (!passedVideoProps) return defaultVideoProps;
+
+    if (typeof passedVideoProps !== 'function') return passedVideoProps;
+
+    return passedVideoProps(defaultVideoProps);
+  }, [passedVideoProps, onLoad]);
 
   return (
     <section style={containerStyle}>
@@ -69,20 +103,7 @@ const BarcodeScanner = ({
           ...(!isShowingDisabledImage ? styles.barcodeScannerVisible : {}),
           ...videoContainerStyle,
         }}>
-        <video
-          ref={videoElement}
-          playsInline
-          disablePictureInPicture
-          muted
-          onLoadedData={onLoadedData}
-          style={{
-            ...styles.video,
-            ...videoStyle,
-            transform: `${videoStyle?.transform ?? ''} ${
-              constraints.facingMode === 'user' ? 'scaleX(-1)' : ''
-            }`,
-          }}
-        />
+        <video ref={videoElement} {...videoProps} />
         {!!Viewfinder && <Viewfinder />}
       </div>
     </section>

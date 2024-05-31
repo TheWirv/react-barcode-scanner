@@ -1,4 +1,4 @@
-import {ReactElement, CSSProperties} from 'react';
+import {CSSProperties, ReactElement, VideoHTMLAttributes} from 'react';
 
 export type BarcodeScannerProps = {
   /**
@@ -38,4 +38,13 @@ export type BarcodeScannerProps = {
    * Property that represents a style for the video
    */
   videoStyle?: CSSProperties;
+  /**
+   * Props to be passed to the used `<video />` element. Can either be an object to completely override
+   * the existing behavior, or a function to make the changes additive.
+   */
+  videoProps?:
+    | VideoHTMLAttributes<HTMLVideoElement>
+    | ((
+        defaultProps: VideoHTMLAttributes<HTMLVideoElement>
+      ) => VideoHTMLAttributes<HTMLVideoElement>);
 };
