@@ -68,10 +68,8 @@ const BarcodeScanner = ({
     }
 
     const defaultVideoProps: VideoHTMLAttributes<HTMLVideoElement> = {
-      autoPlay: true,
       playsInline: true,
       disablePictureInPicture: true,
-      disableRemotePlayback: true,
       muted: true,
       onLoadedData: onLoadedData,
       style: {
