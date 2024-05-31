@@ -41,6 +41,8 @@ export type BarcodeScannerProps = {
   /**
    * Props to be passed to the used `<video />` element. Can either be an object to completely override
    * the existing behavior, or a function to make the changes additive.
+   *
+   * Check `defaultVideoProps` inside `index.js` file to see which props are passed by default.
    */
   videoProps?:
     | VideoHTMLAttributes<HTMLVideoElement>
